@@ -1,0 +1,3 @@
+/Users/mihhailmatvejev/CLionProjects/BMPCodeDecode/cmake-build-debug/CMakeFiles/BMPCodeDecode.dir
+/Users/mihhailmatvejev/CLionProjects/BMPCodeDecode/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/mihhailmatvejev/CLionProjects/BMPCodeDecode/cmake-build-debug/CMakeFiles/rebuild_cache.dir

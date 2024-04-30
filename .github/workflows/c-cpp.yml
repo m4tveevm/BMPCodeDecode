@@ -1,0 +1,58 @@
+name: C++ CI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+      - name: Configure CMake (Release build)
+        run: cmake -S . -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build cmake-build-release
+
+      - name: Run tests
+        run: |
+          chmod +x ./cmake-build-release/BMPCodeDecode
+          ./cmake-build-release/BMPCodeDecode -z test_files/input.txt test_files/output.bmp
+          ./cmake-build-release/BMPCodeDecode -u test_files/output.bmp test_files/decoded.txt
+          diff test_files/input.txt test_files/decoded.txt
+
+      - name: Archive release
+        run: |
+          zip -j BMPCodeDecode{{ github.sha }}.zip ./cmake-build-release/BMPCodeDecode
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        with:
+          tag_name: release-${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./BMPCodeDecode_${{ github.sha }}.zip
+          asset_name: BMPCodeDecode_${{ github.sha }}.zip
+          asset_content_type: application/zip
