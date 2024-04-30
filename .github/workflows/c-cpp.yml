@@ -28,8 +28,8 @@ jobs:
       - name: Run tests
         run: |
           chmod +x ./cmake-build-release/BMPCodeDecode
-          ./cmake-build-release/BMPCodeDecode -z test_files/input.txt test_files/output.bmp
-          ./cmake-build-release/BMPCodeDecode -u test_files/output.bmp test_files/decoded.txt
+          ./cmake-build-release/BMPCodeDecode -e test_files/input.txt test_files/output.bmp
+          ./cmake-build-release/BMPCodeDecode -d test_files/output.bmp test_files/decoded.txt
           diff test_files/input.txt test_files/decoded.txt
 
       - name: Archive release
