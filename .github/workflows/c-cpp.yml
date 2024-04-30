@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-and-test:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +33,7 @@ jobs:
 
       - name: Archive release
         run: |
-          zip -j BMPCodeDecode{{ github.sha }}.zip ./cmake-build-release/BMPCodeDecode
+          zip -j BMPCodeDecode_${{ github.sha }}.zip ./cmake-build-release/BMPCodeDecode
 
       - name: Create Release
         id: create_release
